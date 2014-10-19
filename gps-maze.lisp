@@ -18,4 +18,3 @@
 (use *maze-ops*)
 
 (gps '((at 1)) '((at 25)))
-

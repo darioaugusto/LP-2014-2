@@ -30,3 +30,13 @@
 
 (gps '((a on b) (b on table) (space on a) (space on table))
      '((b on a)))
+
+(use (make-block-ops '(a b c)))
+
+(gps '((a on b) (b on c) (c on table) (space on a) (space on table))
+     '((b on a) (c on b)))
+
+;; order matter
+(gps '((a on b) (b on c) (c on table) (space on a) (space on table))
+     '((c on b) (b on a)))
+

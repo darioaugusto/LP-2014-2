@@ -25,6 +25,18 @@
        (eql (first a-list) x)))
 
 
+(defun flatten (the-list)
+  (mappend #'mklist the-list))
+
+(defun mklist (x)
+  (if (listp x)
+      x
+      (list x)))
+
+(defun random-elt (choices)
+  (elt choices (random (length choices))))
+
+
 ;; The Debugging Output Facility
 
 (defvar *dbg-ids* nil "Identifiers used by dbg")

@@ -12,6 +12,8 @@
    #:dbg-off
    #:dbg-indent
    #:find-all
+   #:flatten
+   #:random-elt
    #:find-all-if))
 
 (defpackage #:gps-1
@@ -20,3 +22,5 @@
 (defpackage #:gps-2
   (:use #:cl #:utils))
 
+(defpackage #:eliza
+  (:use #:cl #:utils))
