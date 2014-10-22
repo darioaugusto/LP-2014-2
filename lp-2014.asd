@@ -1,6 +1,6 @@
 ;;;; paip.asd
 
-(asdf:defsystem #:paip
+(asdf:defsystem #:lp-2014
   :serial t
   :components ((:file "packages")
 	       (:file "utils"    :depends-on ("packages"))
