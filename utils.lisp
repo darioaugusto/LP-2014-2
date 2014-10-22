@@ -3,6 +3,9 @@
 
 (setf (symbol-function 'find-all-if) #'remove-if-not)
 
+(defun compose (f g)
+  #'(lambda (x) (funcall f (funcall g x))))
+
 ;; (defun complemento (fn)
 ;;   (lambda (&rest args) (not (apply fn args))))
 
@@ -23,7 +26,6 @@
 (defun starts-with (a-list x)
   (and (consp a-list) 
        (eql (first a-list) x)))
-
 
 (defun flatten (the-list)
   (mappend #'mklist the-list))

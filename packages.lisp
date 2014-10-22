@@ -14,7 +14,8 @@
    #:find-all
    #:flatten
    #:random-elt
-   #:find-all-if))
+   #:find-all-if
+   #:compose))
 
 (defpackage #:gps-1
   (:use #:cl #:utils))
@@ -23,4 +24,7 @@
   (:use #:cl #:utils))
 
 (defpackage #:eliza
+  (:use #:cl #:utils))
+
+(defpackage #:katabank
   (:use #:cl #:utils))
