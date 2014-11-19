@@ -28,3 +28,6 @@
 
 (defpackage #:katabank
   (:use #:cl #:utils))
+
+(defpackage #:tableaux
+  (:use #:cl #:utils))

@@ -23,27 +23,6 @@
     (("020" "101" "121") . 0)))
 
 
-;; (defun make-it-binary (line)
-;;   (let ((new (make-array 0 :element-type 'character
-;; 			   :fill-pointer 0 :adjustable t))
-;; 	(chars (sublis '((#\_ . #\2) (#\| . #\1) (#\Space . #\0)) 
-;; 		       (loop for x across line collect x)
-;; 		       :test #'equal)))
-;;     (dolist (char chars new)
-;;       (vector-push-extend char new))))
-
-;; (defun read-numbers (filename)
-;;   (with-open-file (in filename)
-;;     (let ((res nil)) 
-;;       (dotimes (n 3 res)
-;; 	(push (binary-list (make-it-binary (read-line in))) res)))))
-;;
-;; (defun read-numbers (filename)
-;;   (with-open-file (in filename)
-;;     (loop for x from 0 to 2 
-;; 	  collect (binary-list (make-it-binary (read-line in))))))
-
-
 (defun match-numbers (blk &key (convert nil))
   (let ((numbers (mapcar #'(lambda (x) (cdr (assoc x *bin-nums* :test #'equal))) 
 			 blk)))
