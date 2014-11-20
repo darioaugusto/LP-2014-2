@@ -57,11 +57,16 @@
 
 
 (defun solve (branches)
-  (let ((non-atomics (remove-if #'atomic? (car branches)))) 
+  (let ((non-atomics (remove-if #'atomic? (car branches)))
+	(new-branches nil)) 
     (if (null non-atomics)
 	non-atomics
-	(let ((a-form (car current)))
-	  (solve (append (expand a-form) (cdr branches)))))))
+	(let ((a-form (car non-atomics)))
+	  (let ((news (expand a-form (car branches)))) 
+	    (dolist (n news)
+	      (if (non-crash? n)
+		  (push n new-branches)))
+	    (solve new-branches))))))
 
 
 (defun prove (wff)
