@@ -27,7 +27,6 @@
 
 
 (defun cost (a-formula)
-  " sign = true or false; op = and or implies not "
   (let ((op (car (formula-frm a-formula)))
 	(sign (formula-sign a-formula))) 
     (case op
@@ -39,6 +38,7 @@
 
 
 (defun derive (branch)
+  "Given a branch, select a formula to be decomposed according the rules."
   (if (remove-if #'atomic? branch)
       (let* ((frms (sort (remove-if #'atomic? branch) 
 			 #'< :key #'cost))
@@ -48,7 +48,6 @@
 
 
 (defun apply-rule (formula)
-  "Given a branch, select a formula to be decomposed according the rules."
   (labels ((beta (s1 s2 wff)
 	     (list (list (make-formula s1 (cadr  wff))) 
 		   (list (make-formula s2 (caddr wff)))))
@@ -70,8 +69,8 @@
       ((and (is? 'implies formula) (sign? 'true formula))
        (beta 'false 'true wff))
       ((is? 'not formula) 
-       (let ((ns (invert-sign (formula-sign formula)))) 
-	 (list (list (make-formula ns (cadr wff))))))
+       (list (list (make-formula (invert-sign (formula-sign formula)) 
+				 (cadr wff)))))
       (t nil)))))
 
 
