@@ -119,3 +119,15 @@
       ((or (null branches)
 	   (every #'full-expanded? branches)) 
        branches)))
+
+
+(defun test ()
+  (let ((formulas (list '(and A B)
+			'(or A B)
+			'A
+			'(implies (or A B) (and A B))
+			'(implies (and A B) (or A B))
+			'(implies (not (not A)) A)
+			'(implies A (not (not A))))))
+    (dolist (f formulas)
+      (print (prove f)))))
