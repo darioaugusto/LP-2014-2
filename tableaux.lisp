@@ -31,8 +31,8 @@
     (match (list (car frm) sign)
       ('(and true)  1)
       ('(and false) 2)
-      ('(or  true)  2)
-      ('(or  false) 1)
+      ('(or true)   2)
+      ('(or false)  1)
       ('(implies true)  2)
       ('(implies false) 1)
       ((or '(not true) '(not false)) 1))))
@@ -41,10 +41,10 @@
 (defun derive (branch)
   "Given a branch, select a formula to be decomposed according the rules."
   (if (remove-if #'atomic? branch)
-      (let* ((frms (sort (remove-if #'atomic? branch) 
-			 #'< :key #'cost))
-	     (rest (remove (car frms) branch :test #'equal))) 
-	(values (apply-rule (car frms)) rest))
+      (let* ((frm (car (sort (remove-if #'atomic? branch) 
+			     #'< :key #'cost)))
+	     (rest (remove frm branch :test #'equal))) 
+	(values (apply-rule frm) rest))
       (values nil branch)))
 
 
