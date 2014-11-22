@@ -30,4 +30,4 @@
   (:use #:cl #:utils))
 
 (defpackage #:tableaux
-  (:use #:cl #:utils))
+  (:use #:cl #:utils :optima))

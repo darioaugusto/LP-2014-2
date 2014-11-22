@@ -2,6 +2,7 @@
 
 (asdf:defsystem #:lp-2014-2
   :serial t
+  :depends-on (:optima)
   :components ((:file "packages")
 	       (:file "utils"    :depends-on ("packages"))
 	       (:file "gps-1"    :depends-on ("utils"))

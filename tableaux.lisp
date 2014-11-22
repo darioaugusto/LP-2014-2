@@ -7,7 +7,7 @@
    (frm     :initform nil :initarg :frm  :accessor formula-frm)))
 
 (defmethod print-object ((frm formula) stream)
-  (format stream "[~a] ~a" (formula-sign frm) (formula-frm frm)))
+  (format stream "<[~a] ~a>" (formula-sign frm) (formula-frm frm)))
 
 
 (defun atomic? (formula)
@@ -27,14 +27,15 @@
 
 
 (defun cost (a-formula)
-  (let ((op (car (formula-frm a-formula)))
-	(sign (formula-sign a-formula))) 
-    (case op
-      (and     (case sign (true 1) (false 2)))
-      (or      (case sign (true 2) (false 1)))
-      (implies (case sign (true 2) (false 1)))
-      (not 1)
-      (otherwise nil))))
+  (with-slots (sign frm) a-formula
+    (match (list (car frm) sign)
+      ('(and true)  1)
+      ('(and false) 2)
+      ('(or  true)  2)
+      ('(or  false) 1)
+      ('(implies true)  2)
+      ('(implies false) 1)
+      ((or '(not true) '(not false)) 1))))
 
 
 (defun derive (branch)
@@ -48,30 +49,24 @@
 
 
 (defun apply-rule (formula)
-  (labels ((beta (s1 s2 wff)
-	     (list (list (make-formula s1 (cadr  wff))) 
-		   (list (make-formula s2 (caddr wff)))))
-	   (alfa (s1 s2 wff)
-	     (list (list (make-formula s1 (cadr  wff))
-			 (make-formula s2 (caddr wff))))))
-    (let ((wff (formula-frm formula))) 
-    (cond
-      ((and (is? 'and formula) (sign? 'false formula)) 
-       (beta 'false 'false wff))
-      ((and (is? 'and formula) (sign? 'true formula)) 
-       (alfa 'true 'true wff))
-      ((and (is? 'or formula) (sign? 'true formula))
-       (beta 'true 'true wff))
-      ((and (is? 'or formula) (sign? 'false formula))
-       (alfa 'false 'false wff))
-      ((and (is? 'implies formula) (sign? 'false formula))
-       (alfa 'true 'false wff))
-      ((and (is? 'implies formula) (sign? 'true formula))
-       (beta 'false 'true wff))
-      ((is? 'not formula) 
-       (list (list (make-formula (invert-sign (formula-sign formula)) 
-				 (cadr wff)))))
-      (t nil)))))
+  "The [match] function from optima library provides pattern-matching
+   functionality."
+  (with-slots ((wff frm) sign) formula  
+    (labels ((beta (s1 s2)
+	       (list (list (make-formula s1 (cadr  wff))) 
+		     (list (make-formula s2 (caddr wff)))))
+	     (alfa (s1 s2)
+	       (list (list (make-formula s1 (cadr  wff))
+			   (make-formula s2 (caddr wff))))))
+      (match (list (car wff) sign)
+	('(and false)     (beta 'false 'false))
+	('(and true)      (alfa 'true 'true)) 
+	('(or true)       (beta 'true 'true))
+	('(or false)      (alfa 'false 'false))
+	('(implies false) (alfa 'true 'false))
+	('(implies true)  (beta 'false 'true))
+	((or '(not true) '(not false)) 
+	 (list (list (make-formula (invert-sign sign) (cadr wff)))))))))
 
 
 (defun unify (frm1 frm2)
@@ -121,12 +116,12 @@
 
 
 (defun test ()
-  (let ((formulas (list '(and A B)
+  (format t "~{~{~a ~^=> ~}~%~}" 
+	  (mapcar (lambda (f) (list f (prove f))) 
+		  (list '(and A B)
 			'(or A B)
 			'A
 			'(implies (or A B) (and A B))
 			'(implies (and A B) (or A B))
 			'(implies (not (not A)) A)
-			'(implies A (not (not A))))))
-    (dolist (f formulas)
-      (print (prove f)))))
+			'(implies A (not (not A)))))))
