@@ -9,7 +9,6 @@
 (defmethod print-object ((frm formula) stream)
   (format stream "<[~a] ~a>" (formula-sign frm) (formula-frm frm)))
 
-
 (defun atomic? (formula)
   (not (listp (formula-frm formula))))
 
@@ -101,10 +100,26 @@
 	    (expand-branches (cdr lolf) branch branches)))))
 
 
+(defun split (branches)
+  (labels ((split-aux (branches derivable non-derivable)
+	     (if (null branches)
+		 (values derivable non-derivable)
+		 (let ((b (car branches)))
+		   (if (full-expanded? b)
+		       (split-aux (cdr branches) derivable (cons b non-derivable))
+		       (split-aux (cdr branches) (cons b derivable) non-derivable))))))
+    (split-aux branches nil nil)))
+
+
 (defun prove-step (branches)
-  (multiple-value-bind (news branch-rest)
-      (derive (car branches))
-    (expand-branches news branch-rest (cdr branches))))
+  (multiple-value-bind (derivable non-derivable)
+      (split branches)
+    (if derivable
+	(multiple-value-bind (news branch-rest)
+	    (derive (car derivable))
+	  (expand-branches news branch-rest 
+			   (append (cdr derivable) non-derivable)))
+	branches)))
 
 
 (defun prove (wff)
@@ -115,7 +130,7 @@
        branches)))
 
 
-(defun test ()
+(defun test-1 ()
   (format t "~{~{~a ~^=> ~}~%~}" 
 	  (mapcar (lambda (f) (list f (prove f))) 
 		  (list '(and A B)
@@ -125,3 +140,6 @@
 			'(implies (and A B) (or A B))
 			'(implies (not (not A)) A)
 			'(implies A (not (not A)))))))
+
+
+
