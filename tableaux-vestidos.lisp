@@ -1,6 +1,12 @@
 
 (in-package :tableaux)
 
+(defmacro by-person (a b c)
+  `(quote ((or (or ,a ,b) ,c)
+	   (implies ,a (and (not ,b) (not ,c)))
+	   (implies ,b (and (not ,a) (not ,c)))
+	   (implies ,c (and (not ,a) (not ,b))))))
+
 (defun vestidos ()
   (let ((theory (append (by-person MA MB MP)
 			(by-person CA CB CP)
@@ -15,13 +21,9 @@
 			      '(implies AP CB)))))
     (reduce (lambda (a b) `(and ,a ,b)) theory)))
 
-(defmacro by-person (a b c)
-  `(quote ((or (or ,a ,b) ,c)
-	   (implies ,a (and (not ,b) (not ,c)))
-	   (implies ,b (and (not ,a) (not ,c)))
-	   (implies ,c (and (not ,a) (not ,b))))))
-
 
 (defun test-vestidos ()
-  "...")
+  (prove `(implies ,(vestidos) (and MA (and CB AP)))))
+
+
 

@@ -10,8 +10,9 @@
 	       (:file "eliza"    :depends-on ("utils"))
 	       (:file "katabank" :depends-on ("utils"))
 	       (:file "tableaux" :depends-on ("utils"))
+	       (:file "tableaux-vestidos" :depends-on ("tableaux"))
 	       (:file "tableaux-opt" :depends-on ("tableaux"))
-	       (:file "tableaux-ext" :depends-on ("tableaux"))
 	       (:file "tableaux-safe" :depends-on ("tableaux"))
-	       (:file "tableaux-vestidos" :depends-on ("tableaux"))))
+	       (:file "tableaux-ext" :depends-on ("tableaux" "tableaux-vestidos"))))
+
 
