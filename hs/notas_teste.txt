@@ -1,0 +1,10 @@
+Eduardo 9.3
+Leonardo 5.6
+Fernanda 8.5
+Rafael 7.1
+Otavio 4.7
+Vinicius 9.8
+Paulo 8.3
+Daniel 7.9
+Bernardo 7.6
+Isabela 5.0

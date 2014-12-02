@@ -1,0 +1,1 @@
+teste currents = first(currents) = 1

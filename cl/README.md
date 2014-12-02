@@ -6,7 +6,7 @@ Códigos usados no curso de Linguagens de Programação da EMAp em
 
 ## Professor
 
-[Alexandre Rademaker e Dário Oliveira](http://arademaker.github.com)
+[Alexandre Rademaker](http://arademaker.github.com)
 
 ## License
 
